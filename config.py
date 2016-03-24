@@ -6,3 +6,8 @@ class BaseConfig(object):
 
 class DevelopmentConfig(BaseConfig): 
     DEBUG = True 
+
+class TestConfig(BaseConfig):
+    DEBUG = True 
+    TESTING = True 
+    
