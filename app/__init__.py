@@ -1,7 +1,24 @@
 import os
 from flask import Flask 
+from flask.ext.sqlalchemy import SQLAlchemy 
+from flask.ext.login import LoginManager 
 
 app = Flask(__name__) 
 app.config.from_object(os.environ["APP_SETTINGS"])
 
-from app import views
+db = SQLAlchemy(app) 
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+from app import views, models
+from models import *
+
+login_manager.login_view = "login"
+login_manager.login_message = u'You need to login first!'
+login_manager.login_message_category = 'info'
+
+# loads users info from db and stores it in a session
+@login_manager.user_loader 
+def load_user(user_id):
+    return User.query.filter(User.id == int(user_id)).first()
