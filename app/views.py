@@ -9,11 +9,11 @@ def index():
 
 @app.route("/signup")
 def signup():
-    return "this is signup page"
+    return render_template("signup.html")
 
 @app.route("/login")
 def login():
-    return "this is login page"
+    return render_template("login.html")
 
 @app.route("/logout")
 def logout():
