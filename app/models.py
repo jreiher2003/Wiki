@@ -1,4 +1,4 @@
-from app import db 
+from app import db, bcrypt
 
 class Users(db.Model):
 
@@ -9,10 +9,10 @@ class Users(db.Model):
     email = db.Column(db.String(120))
     password = db.Column(db.String)
 
-    def __init__(self, name, email, password):
-        self.name = name 
+    def __init__(self, username, email, password):
+        self.username = username 
         self.email = email 
-        self.password = password 
+        self.password = bcrypt.generate_password_hash(password)
 
     def is_authenticated(self):
         return True
@@ -27,4 +27,4 @@ class Users(db.Model):
         return unicode(self.id)
 
     def __repr__(self):
-        return '<name> {}'.format(self.name)
+        return '<username> {}'.format(self.username)

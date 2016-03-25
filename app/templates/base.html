@@ -22,11 +22,25 @@
                     <li><a href="#">Page 1</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                 {% if current_user.is_active %}
+        
+                    <li><a href="{{ url_for('logout') }}">{{ current_user.username }}(logout)</a></li>
+                {% else %}
                     <li><a href="{{ url_for('signup') }}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                     <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul class='flashes list-unstyled'>
+            {% for category, message in messages %}
+            <li class="alert alert-{{ category }}" role="alert">{{ message | safe}}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
         </div>
     </div>
 </div>
