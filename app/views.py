@@ -1,7 +1,8 @@
-from app import app, db
-from flask import render_template, url_for, request, flash, redirect
+from app import app, db, bcrypt
+from flask import render_template, url_for, request, flash, redirect, session
 from flask.ext.login import login_user, logout_user, login_required, current_user
-from models import Users, bcrypt
+from models import Users
+# from forms import SignUpForm 
 from utils import *
 
 
@@ -9,9 +10,9 @@ from utils import *
 def index():
     return render_template("index.html")
 
-@app.route("/signup")
-def signup():
-    return render_template("signup.html")
+@app.route("/_edit/<regex(r'(?:[a-zA-Z0-9_-]+/?)'):param>")
+def edit_wiki(param):
+    return param
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -34,10 +35,23 @@ def login():
 @login_required
 def logout():
     logout_user()
+    session.pop('logged_in', None)
     flash("You have logged out", "info")
     return redirect(url_for('index'))
 
-@app.route("/_edit/<regex(r'(?:[a-zA-Z0-9_-]+/?)'):param>")
-def edit_wiki(param):
-    return param
 
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    error = None 
+    if request.method == "POST":
+        user = Users(form.username.data, 
+            email=request.form["email"],
+            password=request.form["password"]
+            )
+        print user.username, user.email, user.password
+        db.session.add(user)
+        db.session.commit(user)
+        login_user(user)
+        flash("Congrats on your new account!", "success")
+        return redirect(url_for("index"))
+    return render_template("signup.html")
