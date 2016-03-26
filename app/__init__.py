@@ -9,11 +9,12 @@ app.config.from_object(os.environ["APP_SETTINGS"])
 
 db = SQLAlchemy(app) 
 bcrypt = Bcrypt(app)
-
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-from app import views, models
+
+
+from app import views
 from models import *
 
 login_manager.login_view = "login"
@@ -23,4 +24,4 @@ login_manager.login_message_category = 'info'
 # loads users info from db and stores it in a session
 @login_manager.user_loader 
 def load_user(user_id):
-    return Users.query.filter(Users.id == int(user_id)).first()
+    return User.query.filter(User.id == int(user_id)).first()

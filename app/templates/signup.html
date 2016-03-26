@@ -5,28 +5,24 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div id="logbox"  >
+                <h1 class="text-center">Create an Account</h1>
+
                 <form id="signup" method="post" action="">
+                    {{ form.csrf_token }}
                     
-                    <h1 class="text-center">Create an Account</h1>
                      <div class="form-group">
-                        <label for="username" class="sr-only">Username</label>
-                        <input name="username" type="text" placeholder="Username" required="required" class="form-control input"/>
+                        <label for="inputUsername" class="sr-only">Username</label>
+                        {{ form.username(placeholder="username",id="inputUsername", class="form-control input") }}
+                        <span class="error">
+                          {% if form.username.errors %}
+                            {% for error in form.username.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          {% endif %}
+                        </span>
                     </div>
 
-                    <div class="form-group">
-                        <label for="email" class="sr-only">Email address</label>
-                        <input name="email" type="email" placeholder="Email address" required="required" class="form-control input"/>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password" class="sr-only">Password</label>
-                        <input name="password" type="password" placeholder="Choose a password" required="required" class="form-control input"/>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="confirmpassword" class="sr-only">Confirm Password</label>
-                        <input name="confirmpassword" type="password" placeholder="Confirm password" required="required" class="form-control input"/>
-                    </div>
+                  
 
                     <div class="form-group">
                         <input type="submit" value="Sign me up!" class="inputButton"/>
