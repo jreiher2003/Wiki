@@ -18,7 +18,8 @@ def edit_wiki(param):
 def login():
     if request.method == "POST":
         user = User.query.filter_by(name=request.form["username"]).first()
-        if user is not None and user.password == request.form["password"]: 
+        if user is not None and bcrypt.check_password_hash(
+            user.password, request.form["password"]): 
             login_user(user)
             flash("you were signed in", "success")
             return redirect(url_for("index"))

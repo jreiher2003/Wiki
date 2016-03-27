@@ -10,6 +10,11 @@ class User(db.Model):
     email = db.Column(db.String)
     password = db.Column(db.String)
 
+    def __init__(self, name, email, password):
+        self.name = name
+        self.email = email
+        self.password = bcrypt.generate_password_hash(password)
+
     def is_authenticated(self):
         return True
 
