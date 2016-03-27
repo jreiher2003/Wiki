@@ -39,15 +39,17 @@ def logout():
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
-    if request.method == "POST":
+    error = None
+    form = SignUpForm()
+    if form.validate_on_submit():
         user = User(
-            name=request.form["username"],
-            email=request.form["email"],
-            password=request.form["password"]
+            name=form.username.data,
+            email=form.email.data,
+            password=form.password.data
             )
         db.session.add(user)
         db.session.commit()
         login_user(user)
         flash("You just added user <strong>%s</strong>" % user.name, "success")
         return redirect(url_for('index'))
-    return render_template("signup.html")
+    return render_template("signup.html", error=error, form=form)
