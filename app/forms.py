@@ -7,7 +7,7 @@ class SignUpForm(Form):
     username = TextField("username", validators=[DataRequired(), Length(min=3, max=25)])
     email = TextField("email", validators=[DataRequired(), Email(message=None), Length(min=6, max=40)])
     password = PasswordField("password", validators=[DataRequired(), Length(min=6, max=25)])
-    confirm = PasswordField("Repeat password", validators=[DataRequired(), EqualTo("password", message="Passwords didn\'t match.")])
+    confirm = PasswordField("Repeat password", validators=[DataRequired(), EqualTo("password", message="Passwords didn't match.")])
   
 
 class LoginForm(Form):
