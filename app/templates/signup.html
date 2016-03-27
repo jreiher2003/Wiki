@@ -15,7 +15,7 @@
                         {{ form.username(placeholder="username", id="username", class="form-control input") }}
                         {% if form.username.errors %}
                             {% for error in form.username.errors %}
-                                <div class="bg-danger">{{ error }}</div>
+                                <div class="bg-danger form-error">{{ error }}</div>
                             {% endfor %}
                         {% endif %}
                     </div>
@@ -25,7 +25,7 @@
                         {{ form.email(placeholder="email", id="email", class="form-control input") }}
                         {% if form.email.errors %}
                             {% for error in form.email.errors %}
-                                <div class="bg-danger">{{ error }}</div>
+                                <div class="bg-danger form-error">{{ error }}</div>
                             {% endfor %}
                         {% endif %}
                     </div>
@@ -35,7 +35,7 @@
                         {{ form.password(placeholder="password", id="password", class="form-control input") }}
                         {% if form.password.errors %}
                             {% for error in form.password.errors %}
-                                <div class="bg-danger">{{ error }}</div>
+                                <div class="bg-danger form-error">{{ error }}</div>
                             {% endfor %}
                         {% endif %}
                     </div>
@@ -45,7 +45,7 @@
                         {{ form.confirm(placeholder="confirm password", class="form-control input") }}
                         {% if form.confirm.errors %}
                             {% for error in form.confirm.errors %}
-                                <div class="bg-danger">{{ error }}</div>
+                                <div class="bg-danger form-error">{{ error }}</div>
                             {% endfor %}
                         {% endif %}
                     </div>

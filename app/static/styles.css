@@ -40,3 +40,10 @@
     top: 5px;
     box-shadow: none;
 }
+
+.form-error {
+    padding: 5px;
+    background-color: #FF5060;
+    color: white;
+    border-radius: 5px;
+}

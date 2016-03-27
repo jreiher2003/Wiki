@@ -2,7 +2,7 @@ from app import app, db, bcrypt
 from flask import render_template, url_for, request, flash, redirect, session
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from models import User
-from forms import SignUpForm 
+from forms import SignUpForm, LoginForm
 from utils import *
 
 
@@ -16,25 +16,27 @@ def edit_wiki(param):
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == "POST":
-        user = User.query.filter_by(name=request.form["username"]).first()
+    error = None
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(name=form.username.data).first()
         if user is not None and bcrypt.check_password_hash(
-            user.password, request.form["password"]): 
+            user.password, form.password.data): 
             login_user(user)
             flash("you were signed in", "success")
             return redirect(url_for("index"))
         else:
-            flash("invalid", "danger")
+            flash("<strong>Invalid password.</strong> Please try again.", "danger")
             return redirect(url_for("login"))
-    return render_template("login.html")
+    return render_template("login.html", form=form, error=error)
 
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
-    session.pop('logged_in', None)
+    session.pop("logged_in", None)
     flash("You have logged out", "info")
-    return redirect(url_for('index'))
+    return redirect(url_for("index"))
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -51,5 +53,5 @@ def signup():
         db.session.commit()
         login_user(user)
         flash("You just added user <strong>%s</strong>" % user.name, "success")
-        return redirect(url_for('index'))
+        return redirect(url_for("index"))
     return render_template("signup.html", error=error, form=form)
