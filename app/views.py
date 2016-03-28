@@ -11,22 +11,23 @@ def index(page_name=None):
     wiki_posts = Wiki.query.all()
     return render_template("index.html", wiki_posts=wiki_posts)
 
-@app.route("/<regex(r'(?:[a-zA-Z0-9_-]+/?)'):new_page>", methods=["GET", "POST"])
-def create_wiki_page(new_page):
-    form = WikiForm()
-    if form.validate_on_submit():
-        new_wiki = Wiki(page_name=new_page, wiki_post=form.wiki_post.data, user_id=current_user.id)
-        db.session.add(new_wiki)
-        db.session.commit()
-        flash("You just created a new wiki named %s" % new_wiki.page_name, "info")
-        return redirect(url_for("index"))
-    return render_template('create_wiki.html', new_page=new_page, form=form)
+# @app.route("/<regex(r'(?:[a-zA-Z0-9_-]+/?)'):new_page>", methods=["GET", "POST"])
+# def create_wiki_page(new_page):
+#     form = WikiForm()
+#     if form.validate_on_submit():
+#         new_wiki = Wiki(page_name=new_page, wiki_post=form.wiki_post.data, user_id=current_user.id)
+#         db.session.add(new_wiki)
+#         db.session.commit()
+#         flash("You just created a new wiki named %s" % new_wiki.page_name, "info")
+#         return redirect(url_for("index"))
+#     return render_template('create_wiki.html', new_page=new_page, form=form)
 
 
 @app.route("/<page_name>", methods=["GET", "POST"])
 def show_wiki(page_name):
     wiki_page = Wiki.query.filter_by(page_name=page_name).one()
     return render_template("show_wiki.html", wiki_page=wiki_page, page_name=page_name)
+
 
 @app.route("/<page_name>/edit", methods=["GET", "POST"])
 def edit_wiki(page_name):
@@ -40,6 +41,10 @@ def edit_wiki(page_name):
         return redirect(url_for("show_wiki", page_name=page_name))
     return render_template("edit_wiki.html", form=form)
 
+
+@app.route("/<page_name>/history", methods=["GET", "POST"])
+def show_history(page_name):
+    return "this is hisory page"
  
 
 
