@@ -10,9 +10,18 @@ from utils import *
 def index():
     return render_template("index.html")
 
-@app.route("/_edit/<regex(r'(?:[a-zA-Z0-9_-]+/?)'):param>")
+@app.route("/<regex(r'(?:[a-zA-Z0-9_-]+/?)'):param>", methods=["GET", "POST"])
+def create_wiki_page(param):
+    return redirect(url_for("edit_wiki", param=param))
+ 
+@app.route("/<path:param>", methods=["GET", "POST"])
+def show_wiki(param):
+
+
+@app.route("/_edit/<path:param>", methods=["GET", "POST"])
 def edit_wiki(param):
-    return param
+    return render_template("editwiki.html", param=param)
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
