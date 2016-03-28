@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+
+this is show_wiki template<br><br>
+<li><a href="{{ url_for('edit_wiki', page_name=wiki_pgae.page_name) }}">Edit</a></li>
+    {{ wiki_page.wiki_post }}
+    <br>
+    {{ wiki_page.page_name }}
+
+    <a href="/{{wiki_page.page_name}}">{{ wiki_page.page_name }}</a>
+
+{% endblock %}

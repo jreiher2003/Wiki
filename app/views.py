@@ -1,26 +1,47 @@
 from app import app, db, bcrypt
 from flask import render_template, url_for, request, flash, redirect, session
 from flask.ext.login import login_user, logout_user, login_required, current_user
-from models import User
-from forms import SignUpForm, LoginForm
+from models import User, Wiki
+from forms import SignUpForm, LoginForm, WikiForm
 from utils import *
 
 
 @app.route("/")
-def index():
-    return render_template("index.html")
+def index(page_name=None):
+    wiki_posts = Wiki.query.all()
+    return render_template("index.html", wiki_posts=wiki_posts)
 
-@app.route("/<regex(r'(?:[a-zA-Z0-9_-]+/?)'):param>", methods=["GET", "POST"])
-def create_wiki_page(param):
-    return redirect(url_for("edit_wiki", param=param))
+@app.route("/<regex(r'(?:[a-zA-Z0-9_-]+/?)'):new_page>", methods=["GET", "POST"])
+def create_wiki_page(new_page):
+    form = WikiForm()
+    if form.validate_on_submit():
+        new_wiki = Wiki(page_name=new_page, wiki_post=form.wiki_post.data, user_id=current_user.id)
+        db.session.add(new_wiki)
+        db.session.commit()
+        flash("You just created a new wiki named %s" % new_wiki.page_name, "info")
+        return redirect(url_for("index"))
+    return render_template('create_wiki.html', new_page=new_page, form=form)
+
+
+@app.route("/<page_name>", methods=["GET", "POST"])
+def show_wiki(page_name):
+    wiki_page = Wiki.query.filter_by(page_name=page_name).one()
+    return render_template("show_wiki.html", wiki_page=wiki_page, page_name=page_name)
+
+@app.route("/<page_name>/edit", methods=["GET", "POST"])
+def edit_wiki(page_name):
+    wiki_page = Wiki.query.filter_by(page_name=page_name).one()
+    form = WikiForm(obj=wiki_page)
+    if form.validate_on_submit():
+        wiki_page.wiki_post = form.wiki_post.data
+        db.session.add(wiki_page)
+        db.session.commit()
+        flash("you just edited wiki page %s" % wiki_page.page_name, "info")
+        return redirect(url_for("show_wiki", page_name=page_name))
+    return render_template("edit_wiki.html", form=form)
+
  
-@app.route("/<path:param>", methods=["GET", "POST"])
-def show_wiki(param):
 
-
-@app.route("/_edit/<path:param>", methods=["GET", "POST"])
-def edit_wiki(param):
-    return render_template("editwiki.html", param=param)
 
 
 @app.route("/login", methods=["GET", "POST"])

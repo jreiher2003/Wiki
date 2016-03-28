@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-
-
+create_wiki.html<br><br>
+this is create new wiki page named {{ new_page}}
 <form method="post" action="">
-<textarea>{{param}}</textarea>
+    {{ form.csrf_token }}
+    {{ form.wiki_post }}
 <input type="submit" value="Save">
 </form>
 

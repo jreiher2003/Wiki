@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+
+this is edit_wiki template<br><br>
+<form method="post" action="">
+    {{ form.csrf_token }}
+    {{ form.wiki_post }}
+<input type="submit" value="Save">
+</form>
+
+{% endblock %}

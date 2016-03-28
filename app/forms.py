@@ -1,5 +1,5 @@
 from flask_wtf import Form 
-from wtforms import TextField, PasswordField
+from wtforms import TextField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 
@@ -13,3 +13,6 @@ class SignUpForm(Form):
 class LoginForm(Form):
     username = TextField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
+
+class WikiForm(Form):
+    wiki_post = TextAreaField("Wiki Post", validators=[DataRequired()])

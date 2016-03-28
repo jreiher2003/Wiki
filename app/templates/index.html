@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
+this is index.html template<br><br>
 
-Yo
+{% for post in wiki_posts %}
+<a href="{{ post.page_name }}">{{ post.page_name }}</a><br>
+{{ post.date_created }}
+<hr>
+{{ post.wiki_post }}<br><br>
+{% endfor %}
 {% endblock %}
