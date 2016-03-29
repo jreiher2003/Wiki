@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for rev in revisions %}
+{{ rev.wiki_post_rev }}<br>
+{{ rev.user_id }}<br>
+
+{% endfor %}
+
+
+{% endblock %}

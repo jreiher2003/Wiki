@@ -10,7 +10,8 @@ class User(db.Model):
     name = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String)
     password = db.Column(db.String)
-    post = db.relationship("Wiki", backref="post")
+    wiki = db.relationship("Wiki")
+    wiki_rev_u = db.relationship("WikiRevisions")
 
     def __init__(self, name, email, password):
         self.name = name
@@ -43,6 +44,8 @@ class Wiki(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     date_created = db.Column(db.DateTime, default=datetime.datetime.now())
     date_modified = db.Column(db.DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
+    wiki_rev = db.relationship("WikiRevisions")
+
 
 
     @property 
@@ -52,3 +55,16 @@ class Wiki(db.Model):
    
     def __repr__(self):
         return '<id> {}'.format(self.id)
+
+
+class WikiRevisions(db.Model):
+
+    __tablename__ = "wiki_rev" 
+
+    id = db.Column(db.Integer, primary_key=True)
+    wiki_parent = db.Column(db.Integer, db.ForeignKey("wiki.id"))
+    wiki_post_rev = db.Column(db.String)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    wiki = db.relationship(Wiki)
+    user = db.relationship(User)
+    date_modified = db.Column(db.DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
