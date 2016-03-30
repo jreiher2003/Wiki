@@ -11,7 +11,7 @@ from functools import wraps
 
 @app.route("/")
 def index(page_name=None):
-    wiki_posts = Wiki.query.all()
+    wiki_posts = Wiki.query.order_by(Wiki.id.desc()).all()
     return render_template(
         "index.html", 
         wiki_posts=wiki_posts
@@ -20,16 +20,18 @@ def index(page_name=None):
 @app.route("/<path:page_name>", methods=["GET", "POST"])
 def show_wiki(page_name):
     wiki_page = Wiki.query.filter_by(page_name=page_name).first()
-    return render_template(
-        "show_wiki.html", 
-        wiki_page=wiki_page
-        )
+    try:
+        wiki_page.page_name
+        return render_template(
+          "show_wiki.html", 
+            wiki_page=wiki_page
+            )
+    except AttributeError:
+        return redirect(url_for('create_wiki_page', new_page=page_name))
 
-@app.route("/new", methods=["GET", "POST"])
-def create_page():
-    return render_template("create_page.html")
 
-@app.route("/new/<regex(r'(?:[a-zA-Z0-9_-]+/?)'):new_page>", methods=["GET", "POST"])
+# <regex(r'(?:[a-zA-Z0-9_-]+/?)'):new_page>/
+@app.route("/_new/<path:new_page>", methods=["GET", "POST"])
 @login_required
 def create_wiki_page(new_page):
     form = WikiForm()
@@ -59,7 +61,7 @@ def create_wiki_page(new_page):
 
 
 
-@app.route("/<page_name>/edit", methods=["GET", "POST"])
+@app.route("/_edit/<page_name>/", methods=["GET", "POST"])
 @login_required
 def edit_wiki(page_name):
     wiki_page = Wiki.query.filter_by(page_name=page_name).one()
@@ -82,7 +84,7 @@ def edit_wiki(page_name):
         )
 
 
-@app.route("/<page_name>/history", methods=["GET", "POST"])
+@app.route("/<page_name>/_history", methods=["GET", "POST"])
 def show_history(page_name):
     wiki_page = Wiki.query.filter_by(page_name=page_name).one()
     revisions = WikiRevisions.query.filter_by(
@@ -92,7 +94,11 @@ def show_history(page_name):
         "history.html", 
         revisions=revisions
         )
+
  
+@app.route("/new", methods=["GET", "POST"])
+def create_page():
+    return render_template("create_page.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
