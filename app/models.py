@@ -1,6 +1,7 @@
 import datetime
 from app import db
 from app import bcrypt 
+from slugify import slugify
 
 class User(db.Model):
 
@@ -45,6 +46,10 @@ class Wiki(db.Model):
     date_created = db.Column(db.DateTime, default=datetime.datetime.now())
     date_modified = db.Column(db.DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
     wiki_rev = db.relationship("WikiRevisions")
+
+    @property 
+    def slug(self):
+        return slugify(self.page_name)
 
     @property 
     def format_date(self):
