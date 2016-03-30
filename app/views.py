@@ -4,7 +4,10 @@ from flask.ext.login import login_user, logout_user, login_required, current_use
 from models import User, Wiki, WikiRevisions
 from forms import SignUpForm, LoginForm, WikiForm
 
-
+def redirect_url(default='index'):
+    return request.args.get('next') or \
+           request.referrer or \
+           url_for(default)
 
 @app.route("/")
 def index(page_name=None):
@@ -101,6 +104,8 @@ def login():
             user.password, form.password.data): 
             login_user(user)
             flash("you were signed in", "success")
+            referer = request.headers["referer"]
+            print referer
             return redirect(url_for("index"))
         else:
             flash("<strong>Invalid password.</strong> Please try again.", "danger")
@@ -118,7 +123,9 @@ def logout():
     session.pop("logged_in", None)
     session.pop("session", None)
     flash("You have logged out", "info")
-    return redirect(url_for("index"))
+    referer = request.headers["referer"]
+    print referer
+    return redirect(referer)
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
