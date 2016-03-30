@@ -3,9 +3,6 @@ from flask import render_template, url_for, request, flash, redirect, session
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from models import User, Wiki, WikiRevisions
 from forms import SignUpForm, LoginForm, WikiForm
-from utils import *
-from functools import wraps
-
 
 
 
@@ -29,8 +26,6 @@ def show_wiki(page_name):
     except AttributeError:
         return redirect(url_for('create_wiki_page', new_page=page_name))
 
-
-# <regex(r'(?:[a-zA-Z0-9_-]+/?)'):new_page>/
 @app.route("/_new/<path:new_page>", methods=["GET", "POST"])
 @login_required
 def create_wiki_page(new_page):
@@ -39,6 +34,7 @@ def create_wiki_page(new_page):
         new_wiki = Wiki(
             page_name=new_page, 
             wiki_post=form.wiki_post.data,
+            version=1,
             user_id=current_user.id
             )
         db.session.add(new_wiki)
@@ -46,7 +42,8 @@ def create_wiki_page(new_page):
         wiki_rev = WikiRevisions(
             wiki_parent=new_wiki.id, 
             wiki_post_rev=form.wiki_post.data, 
-            user_id=new_wiki.user_id
+            user_id=new_wiki.user_id,
+            version=new_wiki.version,
             )
         db.session.add(wiki_rev)
         db.session.commit()
@@ -58,9 +55,6 @@ def create_wiki_page(new_page):
         form=form
         )
 
-
-
-
 @app.route("/_edit/<page_name>/", methods=["GET", "POST"])
 @login_required
 def edit_wiki(page_name):
@@ -68,11 +62,14 @@ def edit_wiki(page_name):
     form = WikiForm(obj=wiki_page)
     if form.validate_on_submit():
         wiki_page.wiki_post = form.wiki_post.data
+        wiki_page.version += 1
         revisions = WikiRevisions(
             wiki_parent=wiki_page.id,
              wiki_post_rev=form.wiki_post.data, 
-             user_id=current_user.id
+             user_id=current_user.id,
+             version=wiki_page.version
              )
+        # revisions.version += 1
         db.session.add(revisions)
         db.session.add(wiki_page)
         db.session.commit()
@@ -82,7 +79,6 @@ def edit_wiki(page_name):
         "edit_wiki.html", 
         form=form
         )
-
 
 @app.route("/<page_name>/_history", methods=["GET", "POST"])
 def show_history(page_name):
@@ -94,11 +90,6 @@ def show_history(page_name):
         "history.html", 
         revisions=revisions
         )
-
- 
-@app.route("/new", methods=["GET", "POST"])
-def create_page():
-    return render_template("create_page.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -127,7 +118,6 @@ def logout():
     session.pop("logged_in", None)
     flash("You have logged out", "info")
     return redirect(url_for("index"))
-
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
