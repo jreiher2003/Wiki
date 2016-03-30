@@ -38,7 +38,7 @@ class Wiki(db.Model):
     __tablename__ = "wiki"
 
     id = db.Column(db.Integer, primary_key=True)
-    version = db.Column(db.Integer)
+    version = db.Column(db.Integer, default=1, autoincrement=True)
     page_name = db.Column(db.String)
     wiki_post = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
@@ -46,13 +46,22 @@ class Wiki(db.Model):
     date_modified = db.Column(db.DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
     wiki_rev = db.relationship("WikiRevisions")
 
-
-
     @property 
     def format_date(self):
         return '{dt:%A} {dt:%B} {dt.day}, {dt.year}'.format(dt=self.date_created)
 
-   
+    @property 
+    def format_time(self):
+        return '{dt:%I:%M %p}'.format(dt=self.date_created)
+
+    @property 
+    def last_modified_date(self):
+        return '{dt:%A} {dt:%B} {dt.day}, {dt.year}'.format(dt=self.date_modified)
+
+    @property 
+    def last_modified_time(self):
+        return '{dt:%I:%M %p}'.format(dt=self.date_modified)
+
     def __repr__(self):
         return '<id> {}'.format(self.id)
 
@@ -63,8 +72,29 @@ class WikiRevisions(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     wiki_parent = db.Column(db.Integer, db.ForeignKey("wiki.id"))
+    version = db.Column(db.Integer,  default=1, autoincrement=True)
     wiki_post_rev = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     wiki = db.relationship(Wiki)
     user = db.relationship(User)
+    date_created = db.Column(db.DateTime, default=datetime.datetime.now())
     date_modified = db.Column(db.DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
+
+    @property 
+    def format_date(self):
+        return '{dt:%A} {dt:%B} {dt.day}, {dt.year}'.format(dt=self.date_created)
+
+    @property 
+    def format_time(self):
+        return '{dt:%I:%M %p}'.format(dt=self.date_created)
+
+    @property 
+    def last_modified_date(self):
+        return '{dt:%A} {dt:%B} {dt.day}, {dt.year}'.format(dt=self.date_modified)
+
+    @property 
+    def last_modified_time(self):
+        return '{dt:%I:%M %p}'.format(dt=self.date_modified)
+
+    def __repr__(self):
+        return '<id> {}'.format(self.id)
