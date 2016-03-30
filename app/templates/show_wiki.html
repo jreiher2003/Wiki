@@ -7,8 +7,9 @@ this is show_wiki template<br><br>
 <li><a href="{{ url_for('show_history', page_name=wiki_page.page_name) }}">History</a></li>
     {{ wiki_page.wiki_post }}
     <br>
-    date created: {{ wiki_page.date_created }}<br>
-    last modified: {{ wiki_page.date_modified }}
+    <!-- {# date created: {{ wiki_page.format_date }}&nbsp;{{ wiki_page.format_time }}<br>#} -->
+    last edit: {{ wiki_page.last_modified_date }}&nbsp;{{ wiki_page.last_modified_time }}<br>
+    <strong>Version:</atrong> {{ wiki_page.version }}
 
     
 

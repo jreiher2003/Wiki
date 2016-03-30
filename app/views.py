@@ -116,6 +116,7 @@ def login():
 def logout():
     logout_user()
     session.pop("logged_in", None)
+    session.pop("session", None)
     flash("You have logged out", "info")
     return redirect(url_for("index"))
 

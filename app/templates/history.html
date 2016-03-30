@@ -3,8 +3,10 @@
 {% block content %}
 
 {% for rev in revisions %}
+
 {{ rev.wiki_post_rev }}<br>
-{{ rev.user_id }}<br>
+<h5>version: {{ rev.version }} was edited last on {{ rev.last_modified_date }} at {{ rev.last_modified_time }}</h5><br><br>
+<hr>
 
 {% endfor %}
 
