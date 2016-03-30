@@ -12,62 +12,87 @@ from functools import wraps
 @app.route("/")
 def index(page_name=None):
     wiki_posts = Wiki.query.all()
-    return render_template("index.html", wiki_posts=wiki_posts)
-
-
-@app.route("/new/<regex(r'(?:[a-zA-Z0-9_-]+/?)'):new_page>", methods=["GET", "POST"])
-def create_wiki_page(new_page):
-    form = WikiForm()
-    if form.validate_on_submit():
-        new_wiki = Wiki(page_name=new_page, wiki_post=form.wiki_post.data)
-
-        if current_user.is_active:
-            new_wiki.user_id = current_user.id
-        else:
-            new_wiki.user_id = None
-
-        db.session.add(new_wiki)
-        db.session.commit()
-        wiki_rev = WikiRevisions(wiki_parent=new_wiki.id, wiki_post_rev=form.wiki_post.data, user_id=new_wiki.user_id)
-        db.session.add(wiki_rev)
-        db.session.commit()
-        flash("You just created a new wiki named %s" % new_wiki.page_name, "info")
-        return redirect(url_for("index"))
-    return render_template('create_wiki.html', new_page=new_page, form=form)
-
+    return render_template(
+        "index.html", 
+        wiki_posts=wiki_posts
+        )
 
 @app.route("/<path:page_name>", methods=["GET", "POST"])
 def show_wiki(page_name):
     wiki_page = Wiki.query.filter_by(page_name=page_name).first()
-    return render_template("show_wiki.html", wiki_page=wiki_page)
+    return render_template(
+        "show_wiki.html", 
+        wiki_page=wiki_page
+        )
+
+@app.route("/new", methods=["GET", "POST"])
+def create_page():
+    return render_template("create_page.html")
+
+@app.route("/new/<regex(r'(?:[a-zA-Z0-9_-]+/?)'):new_page>", methods=["GET", "POST"])
+@login_required
+def create_wiki_page(new_page):
+    form = WikiForm()
+    if form.validate_on_submit():
+        new_wiki = Wiki(
+            page_name=new_page, 
+            wiki_post=form.wiki_post.data,
+            user_id=current_user.id
+            )
+        db.session.add(new_wiki)
+        db.session.commit()
+        wiki_rev = WikiRevisions(
+            wiki_parent=new_wiki.id, 
+            wiki_post_rev=form.wiki_post.data, 
+            user_id=new_wiki.user_id
+            )
+        db.session.add(wiki_rev)
+        db.session.commit()
+        flash("You just created a new wiki named %s" % new_wiki.page_name, "info")
+        return redirect(url_for("index"))
+    return render_template(
+        "create_wiki.html", 
+        new_page=new_page, 
+        form=form
+        )
+
+
 
 
 @app.route("/<page_name>/edit", methods=["GET", "POST"])
 @login_required
 def edit_wiki(page_name):
     wiki_page = Wiki.query.filter_by(page_name=page_name).one()
-    # revisions = WikiRevisions.query.filter_by(wiki_parent=wiki_page.id).one()
     form = WikiForm(obj=wiki_page)
     if form.validate_on_submit():
         wiki_page.wiki_post = form.wiki_post.data
-        revisions = WikiRevisions(wiki_parent=wiki_page.id, wiki_post_rev=form.wiki_post.data, user_id=current_user.id)
-
+        revisions = WikiRevisions(
+            wiki_parent=wiki_page.id,
+             wiki_post_rev=form.wiki_post.data, 
+             user_id=current_user.id
+             )
         db.session.add(revisions)
         db.session.add(wiki_page)
         db.session.commit()
         flash("you just edited wiki page %s" % wiki_page.page_name, "info")
         return redirect(url_for("show_wiki", page_name=page_name))
-    return render_template("edit_wiki.html", form=form)
+    return render_template(
+        "edit_wiki.html", 
+        form=form
+        )
 
 
 @app.route("/<page_name>/history", methods=["GET", "POST"])
 def show_history(page_name):
     wiki_page = Wiki.query.filter_by(page_name=page_name).one()
-    revisions = WikiRevisions.query.filter_by(wiki_parent=wiki_page.id).order_by(WikiRevisions.id.desc()).all()
-    return render_template("history.html", revisions=revisions)
+    revisions = WikiRevisions.query.filter_by(
+        wiki_parent=wiki_page.id).order_by(
+        WikiRevisions.id.desc()).all()
+    return render_template(
+        "history.html", 
+        revisions=revisions
+        )
  
-
-
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -83,7 +108,11 @@ def login():
         else:
             flash("<strong>Invalid password.</strong> Please try again.", "danger")
             return redirect(url_for("login"))
-    return render_template("login.html", form=form, error=error)
+    return render_template(
+        "login.html", 
+        form=form, 
+        error=error
+        )
 
 @app.route("/logout")
 @login_required
@@ -109,4 +138,8 @@ def signup():
         login_user(user)
         flash("You just added user <strong>%s</strong>" % user.name, "success")
         return redirect(url_for("index"))
-    return render_template("signup.html", error=error, form=form)
+    return render_template(
+        "signup.html", 
+        error=error, 
+        form=form
+        )

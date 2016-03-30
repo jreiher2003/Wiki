@@ -19,7 +19,7 @@
                     <a class="navbar-brand" href="{{ url_for('index') }}">Wiki</a>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li><a href="#">Page 1</a></li>
+                    <li><a href="{{ url_for('create_page') }}">New Page</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                  {% if current_user.is_active %}
