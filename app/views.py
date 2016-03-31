@@ -9,6 +9,11 @@ def redirect_url(default='index'):
            request.referrer or \
            url_for(default)
 
+def get_ip():
+    headers_list = request.headers.getlist("X-Forwarded-For")
+    user_ip = headers_list[0] if headers_list else request.remote_addr
+    return user_ip
+
 @app.route("/")
 def index(page_name=None):
     wiki_posts = Wiki.query.order_by(Wiki.id.desc()).all()
@@ -135,13 +140,17 @@ def signup():
         user = User(
             name=form.username.data,
             email=form.email.data,
-            password=form.password.data
-            )
-        db.session.add(user)
-        db.session.commit()
-        login_user(user)
-        flash("You just added user <strong>%s</strong>" % user.name, "success")
-        return redirect(url_for("index"))
+            password=form.password.data,
+            ip=get_ip())
+        try:
+            db.session.add(user)
+            db.session.commit()
+            login_user(user)
+            flash("You just added user <strong>%s</strong>" % user.name, "success")
+            return redirect(url_for("index"))
+        except:
+            flash("That username already exists", "danger")
+            return redirect(url_for("signup"))
     return render_template(
         "signup.html", 
         error=error, 

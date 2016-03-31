@@ -1,3 +1,6 @@
+.icon-bar {
+    background-color: #337ab7;
+}
 #logbox {
     padding: 20px;
     margin: 50px auto;
@@ -34,8 +37,8 @@
     box-shadow: none;
 }
 .form-error {
-    padding: 5px;
-    background-color: #FF5060;
-    color: white;
-    border-radius: 5px;
+    padding: 2px;
+    /*background-color: #FF5060;*/
+    color: #FF5060;
+    /*border-radius: 5px;*/
 }

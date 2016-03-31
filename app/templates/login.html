@@ -13,7 +13,7 @@
                         {{ form.username(placeholder="Username", id="username", class="form-control input") }}
                         {% if form.username.errors %}
                             {% for error in form.username.errors %}
-                                <div class="bg-danger form-error">{{ error }}</div>
+                                <div class="form-error">{{ error }}</div>
                             {% endfor %}
                         {% endif %}
                     </div>  
@@ -23,7 +23,7 @@
                         {{ form.password(placeholder="password", id="password", class="form-control input") }}
                         {% if form.password.errors %}
                             {% for error in form.password.errors %}
-                                <div class="bg-danger form-error">{{ error }}</div>
+                                <div class="form-error">{{ error }}</div>
                             {% endfor %}
                         {% endif %}
                     </div>           

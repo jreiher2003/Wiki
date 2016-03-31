@@ -1,14 +1,19 @@
 {% extends "base.html" %}
-
 {% block content %}
 
-{% for rev in revisions %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
 
-{{ rev.wiki_post_rev }}<br>
-<h5>version: {{ rev.version }} was edited last on {{ rev.last_modified_date }} at {{ rev.last_modified_time }}</h5><br><br>
-<hr>
-
-{% endfor %}
+            {% for rev in revisions %}
+            {{ rev.wiki_post_rev | safe }}<br>
+            <p><strong>version:</strong> {{ rev.version }} was edited last on {{ rev.last_modified_date }} at {{ rev.last_modified_time }}</p>
+            <p><strong>edited by:</strong> {{ rev.user.name }}</p>
+            <hr>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
 
 {% endblock %}

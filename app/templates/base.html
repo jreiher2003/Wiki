@@ -17,20 +17,27 @@
         <nav class="navbar">
             <div class="container-fluid">
                 <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
                     <a class="navbar-brand" href="{{ url_for('index') }}">Wiki</a>
                 </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <!-- <li><a href="">New Page</a></li> -->
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                 {% if current_user.is_active %}
-                    
+                {% if current_user.is_active %}
                     <li><a href="{{ url_for('logout') }}">{{ current_user.name }}(logout)</a></li>
                 {% else %}
                     <li><a href="{{ url_for('signup') }}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                     <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                    {% endif %}
+                {% endif %}
                 </ul>
+                </div>
             </div>
         </nav>
         {% with messages = get_flashed_messages(with_categories=true) %}

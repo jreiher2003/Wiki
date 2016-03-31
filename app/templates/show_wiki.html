@@ -1,15 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
-
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
    
-this is show_wiki template<br><br>
-<li><a href="{{ url_for('edit_wiki', page_name=wiki_page.page_name) }}">Edit</a></li>
-<li><a href="{{ url_for('show_history', page_name=wiki_page.page_name) }}">History</a></li>
-    {{ wiki_page.wiki_post | safe }}
-    <br>
-    <!-- {# date created: {{ wiki_page.format_date }}&nbsp;{{ wiki_page.format_time }}<br>#} -->
-    last edit: {{ wiki_page.last_modified_date }}&nbsp;{{ wiki_page.last_modified_time }}<br>
-    <strong>Version:</atrong> {{ wiki_page.version }}
+            this is show_wiki template<br><br>
+            {% if current_user.is_active %}
+            <ul class="list-unstyled list-inline">
+                <li><a href="{{ url_for('edit_wiki', page_name=wiki_page.page_name) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;edit</a></li>
+                <li><a href="{{ url_for('show_history', page_name=wiki_page.page_name) }}"><span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;History</a></li>
+                {% else %}
+                <li><a href="{{ url_for('show_history', page_name=wiki_page.page_name) }}">History</a></li>
+            </ul>
+            {% endif %}
+
+               
+                {{ wiki_page.wiki_post | safe }}
+        
+                <br>
+                <p><strong>last edit:</strong> {{ wiki_page.date_modified }}&nbsp;<p>
+                <p><strong>Version:</strong> {{ wiki_page.version }}</p>
+
+        </div>
+    </div>
+</div>
+
+                
 
     
 

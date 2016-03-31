@@ -1,14 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-this is index.html template<br><br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            this is index.html template<br><br>
 
-{% for post in wiki_posts %}
-<a href="{{ post.page_name }}">{{ post.page_name }}</a><br>
-{{ post.format_date }}<br>
-{{ post.wiki_post | safe }}<br>
-<strong>version:</strong>{{ post.version }}
-<hr>
-<br>
-{% endfor %}
+            {% for post in wiki_posts %}
+                <p><a href="{{ post.page_name }}">{{ post.page_name }}</a></p>
+                <p><strong>created: </strong>{{ post.format_date }}</p>
+                {{ post.wiki_post | safe }}<br>
+                <p><strong>version:</strong>{{ post.version }}</p>
+                <hr>
+                
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

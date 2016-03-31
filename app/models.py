@@ -8,16 +8,18 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True) 
-    name = db.Column(db.String(80), nullable=False)
+    name = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String)
     password = db.Column(db.String)
+    ip = db.Column(db.String)
     wiki = db.relationship("Wiki")
     wiki_rev_u = db.relationship("WikiRevisions")
 
-    def __init__(self, name, email, password):
+    def __init__(self, name, email, password, ip):
         self.name = name
         self.email = email
         self.password = bcrypt.generate_password_hash(password)
+        self.ip = ip
 
     def is_authenticated(self):
         return True
@@ -45,6 +47,7 @@ class Wiki(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     date_created = db.Column(db.DateTime, default=datetime.datetime.now())
     date_modified = db.Column(db.DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
+    user = db.relationship("User")
     wiki_rev = db.relationship("WikiRevisions")
 
     @property 
@@ -61,7 +64,7 @@ class Wiki(db.Model):
 
     @property 
     def last_modified_date(self):
-        return '{dt:%A} {dt:%B} {dt.day}, {dt.year}'.format(dt=self.date_modified)
+        return '{dt:%Y-%m-%d}'.format(dt=self.date_modified)
 
     @property 
     def last_modified_time(self):
@@ -95,7 +98,7 @@ class WikiRevisions(db.Model):
 
     @property 
     def last_modified_date(self):
-        return '{dt:%A} {dt:%B} {dt.day}, {dt.year}'.format(dt=self.date_modified)
+        return '{dt:%Y-%m-%d}'.format(dt=self.date_modified)
 
     @property 
     def last_modified_time(self):
