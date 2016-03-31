@@ -14,5 +14,6 @@ class LoginForm(Form):
     username = TextField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
 
+
 class WikiForm(Form):
     wiki_post = TextAreaField("Wiki Post", validators=[DataRequired()])

@@ -6,7 +6,7 @@ this is index.html template<br><br>
 {% for post in wiki_posts %}
 <a href="{{ post.page_name }}">{{ post.page_name }}</a><br>
 {{ post.format_date }}<br>
-{{ post.wiki_post }}<br>
+{{ post.wiki_post | safe }}<br>
 <strong>version:</strong>{{ post.version }}
 <hr>
 <br>
