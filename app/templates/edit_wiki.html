@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            this is edit_wiki template<br><br>
+            <h2 class="text-center"> {{ wiki_page.page_name}}</h2>
             <form method="post" action="">
                 {{ form.csrf_token }}
                 {{ form.wiki_post(class="form-control", rows="20") }}
