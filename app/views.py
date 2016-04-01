@@ -15,7 +15,7 @@ def get_ip():
     return user_ip
 
 @app.route("/")
-def index(page_name=None):
+def index():
     wiki_posts = Wiki.query.order_by(Wiki.id.desc()).all()
     wiki_rev = WikiRevisions.query.all()
     return render_template(
@@ -33,11 +33,14 @@ def show_wiki(page_name):
             wiki_page=wiki_page
             )
     except AttributeError:
-        return redirect(url_for('create_wiki_page', new_page=page_name))
+        return redirect(url_for(
+            'create_wiki_page', 
+            new_page=page_name))
 
 @app.route("/_new/<path:new_page>", methods=["GET", "POST"])
 @login_required
 def create_wiki_page(new_page):
+    error = None
     form = WikiForm()
     if form.validate_on_submit():
         new_wiki = Wiki(
@@ -56,17 +59,19 @@ def create_wiki_page(new_page):
             )
         db.session.add(wiki_rev)
         db.session.commit()
-        flash("You just created a new wiki named %s" % new_wiki.page_name, "info")
+        flash("You just created a new wiki named <u>%s</u>" % new_wiki.page_name, "success")
         return redirect(url_for("index"))
     return render_template(
         "create_wiki.html", 
         new_page=new_page, 
-        form=form
+        form=form,
+        error=error
         )
 
 @app.route("/_edit/<page_name>/", methods=["GET", "POST"])
 @login_required
 def edit_wiki(page_name):
+    error = None
     wiki_page = Wiki.query.filter_by(page_name=page_name).one()
     form = WikiForm(obj=wiki_page)
     if form.validate_on_submit():
@@ -82,12 +87,13 @@ def edit_wiki(page_name):
         db.session.add(revisions)
         db.session.add(wiki_page)
         db.session.commit()
-        flash("you just edited wiki page %s" % wiki_page.page_name, "info")
+        flash("You just edited wiki page <u>%s</u>" % wiki_page.page_name, "success")
         return redirect(url_for("show_wiki", page_name=page_name))
     return render_template(
         "edit_wiki.html", 
         form=form,
-        wiki_page=wiki_page
+        wiki_page=wiki_page,
+        error = error
         )
 
 @app.route("/<page_name>/_history", methods=["GET", "POST"])
@@ -110,7 +116,7 @@ def login():
         if user is not None and bcrypt.check_password_hash(
             user.password, form.password.data): 
             login_user(user)
-            flash("you were signed in", "success")
+            flash("You have signed in as <strong>%s</strong>!" % user.name, "success")
             referer = request.headers["referer"]
             print referer
             return redirect(url_for("index"))
@@ -129,7 +135,7 @@ def logout():
     logout_user()
     session.pop("logged_in", None)
     session.pop("session", None)
-    flash("You have logged out", "info")
+    flash("You have logged out.", "danger")
     referer = request.headers["referer"]
     print referer
     return redirect(referer)
