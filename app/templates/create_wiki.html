@@ -3,16 +3,21 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-        create_wiki.html<br><br>
-        this is create new wiki page named {{ new_page}}
-        <form method="post" action="">
-            {{ form.csrf_token }}
-            {{ form.wiki_post(class="form-control", rows="20", placeholder="Add your wiki content use HTML for format...") }}
-            
-        <input type="submit" value="Save">
-        </form>
+            <h3 class="text-center">create a new wiki page named <i>{{ new_page }}</i></h3>
+            <form method="post" action="">
+                {{ form.csrf_token }}
+                <div class="form-group">
+                    <label for="create-wiki" class="sr-only">Create Wiki</label>
+                    {{ form.wiki_post(class="",style="min-width: 100%", id="create-wiki", rows="20", placeholder="Add your wiki content use HTML for format...") }}
+                    {% if form.wiki_post.errors %}
+                        {% for error in form.wiki_post.errors %}
+                            <div class="form-error">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <input type="submit" value="Save" class="form-inline">
+            </form>
         </div>
     </div>
 </div>
-
 {% endblock %}

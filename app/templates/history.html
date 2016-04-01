@@ -1,22 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
-
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <div class="history-show-wiki">
-                {% for rev in revisions %}
-                <p class="pull-right"><a href="{{ url_for('show_wiki', page_name=rev.wiki.page_name) }}"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>&nbsp;back</a></p>
-                <p><strong>version:</strong> {{ rev.version }} </p>
-                <p><strong>last edit:</strong>&nbsp; {{ rev.format_date }} at {{ rev.format_time }}</p>
-                <p><strong>edited by:</strong> {{ rev.user.name }}</p>
-                <pre>{{ rev.wiki_post_rev | safe }}</pre>
-               
-                {% endfor %}
-            </div>
+            {% for rev in revisions %}
+                <div class="history-show-wiki">
+                    <hr>
+                    <p class="pull-right" style="padding-top:-25px;"><a href="{{ url_for('show_wiki', page_name=rev.wiki.page_name) }}"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>&nbsp;back</a></p>
+                    <p><strong>version:</strong> {{ rev.version }} </p>
+                    <p><strong>last edit:</strong>&nbsp; {{ rev.format_date }} at {{ rev.format_time }}</p>
+                    <p><strong>edited by:</strong> {{ rev.user.name }}</p>
+                    <hr>
+                    <pre>{{ rev.wiki_post_rev | safe }}</pre>
+                </div>
+            {% endfor %}
         </div>
     </div>
 </div>
-
-
 {% endblock %}

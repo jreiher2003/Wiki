@@ -6,8 +6,17 @@
             <h2 class="text-center"> {{ wiki_page.page_name}}</h2>
             <form method="post" action="">
                 {{ form.csrf_token }}
-                {{ form.wiki_post(class="form-control", rows="20") }}
+                <div class="form-group">
+                    <label for="edit-wiki" class="sr-only">Edit Wiki</label>
+                    {{ form.wiki_post(class="form-control", rows="20") }}
+                    {% if form.wiki_post.errors %}
+                        {% for error in form.wiki_post.errors %}
+                            <div class="form-error">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
             <input type="submit" value="Save">
+            &nbsp;<a href="{{ url_for('show_wiki', page_name=wiki_page.page_name) }}">cancel</a>
             </form>
         </div>
     </div>
