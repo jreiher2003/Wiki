@@ -17,6 +17,7 @@ def get_ip():
 @app.route("/")
 def index(page_name=None):
     wiki_posts = Wiki.query.order_by(Wiki.id.desc()).all()
+    wiki_rev = WikiRevisions.query.all()
     return render_template(
         "index.html", 
         wiki_posts=wiki_posts
@@ -85,7 +86,8 @@ def edit_wiki(page_name):
         return redirect(url_for("show_wiki", page_name=page_name))
     return render_template(
         "edit_wiki.html", 
-        form=form
+        form=form,
+        wiki_page=wiki_page
         )
 
 @app.route("/<page_name>/_history", methods=["GET", "POST"])
