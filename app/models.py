@@ -45,8 +45,8 @@ class Wiki(db.Model):
     page_name = db.Column(db.String)
     wiki_post = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    date_created = db.Column(db.DateTime, default=datetime.datetime.now())
-    date_modified = db.Column(db.DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
+    date_created = db.Column(db.DateTime, default=datetime.datetime.now)
+    date_modified = db.Column(db.DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
     user = db.relationship("User")
     wiki_rev = db.relationship("WikiRevisions")
 
@@ -85,8 +85,8 @@ class WikiRevisions(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     wiki = db.relationship(Wiki)
     user = db.relationship(User)
-    date_created = db.Column(db.DateTime, default=datetime.datetime.now())
-    date_modified = db.Column(db.DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
+    date_created = db.Column(db.DateTime, default=datetime.datetime.now)
+   
 
     @property 
     def format_date(self):
@@ -96,13 +96,6 @@ class WikiRevisions(db.Model):
     def format_time(self):
         return '{dt:%I:%M %p}'.format(dt=self.date_created)
 
-    @property 
-    def last_modified_date(self):
-        return '{dt:%Y-%m-%d}'.format(dt=self.date_modified)
-
-    @property 
-    def last_modified_time(self):
-        return '{dt:%I:%M %p}'.format(dt=self.date_modified)
 
     def __repr__(self):
         return '<id> {}'.format(self.id)
