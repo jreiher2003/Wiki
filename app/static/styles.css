@@ -1,6 +1,9 @@
 a {
     color: rgba(51,122,183,.8);
 }
+a:hover{
+    color: #2FA8CE;
+}
 .navbar {
     background-color: rgba(51,122,183,.1);
     border: 1px solid rgba(51,122,183,.4); 
