@@ -80,7 +80,7 @@ class WikiRevisions(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     wiki_parent = db.Column(db.Integer, db.ForeignKey("wiki.id"))
-    version = db.Column(db.Integer,  default=1, autoincrement=True)
+    version = db.Column(db.Integer)
     wiki_post_rev = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     wiki = db.relationship(Wiki)
