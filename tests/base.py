@@ -12,27 +12,27 @@ class BaseTestCase(TestCase):
     def setUp(self):
         """ set up db """
         db.create_all()
-        one = User(
+        user = User(
             name="Admin", 
             email="test@email.com", 
             password="password",
             ip="127.0.0.1"
             )
-        # wiki = Wiki(
-        #     page_name="testpage", 
-        #     wiki_post="test wiki post", 
-        #     user_id=user.id,
-        #     version=1
-        #     )
-        # wiki_rev = WikiRevisions(
-        #     wiki_parent=1,
-        #     wiki_post_rev="test wiki post",
-        #     user_id=user.id,
-        #     version=wiki.version
-        #     )
-        db.session.add(one)
-        # db.session.add(wiki)
-        # db.session.add(wiki_rev)
+        wiki = Wiki(
+            page_name="testpage", 
+            wiki_post="test wiki post", 
+            user_id=user.id,
+            version=1
+            )
+        wiki_rev = WikiRevisions(
+            wiki_parent=1,
+            wiki_post_rev="test wiki post",
+            user_id=user.id,
+            version=wiki.version
+            )
+        db.session.add(user)
+        db.session.add(wiki)
+        db.session.add(wiki_rev)
         db.session.commit()
 
     def tearDown(self):
