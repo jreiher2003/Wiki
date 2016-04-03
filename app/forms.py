@@ -16,4 +16,4 @@ class LoginForm(Form):
 
 
 class WikiForm(Form):
-    wiki_post = TextAreaField("Wiki Post", validators=[DataRequired()])
+    content = TextAreaField("Content", validators=[DataRequired()])

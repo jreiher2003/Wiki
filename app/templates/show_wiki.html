@@ -21,7 +21,7 @@
                 <p><strong>last edit:&nbsp;</strong> {{ wiki_page.last_modified_date }}&nbsp;{{ wiki_page.last_modified_time }}<p>
                 <p><strong>Version:</strong> {{ wiki_page.version }}</p>
             <hr>
-            <pre>{{ wiki_page.wiki_post | safe }}</pre>
+            <pre>{{ wiki_page.content | safe }}</pre>
             </div>
         </div>
     </div>

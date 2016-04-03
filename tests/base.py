@@ -20,7 +20,7 @@ class BaseTestCase(TestCase):
             )
         wiki = Wiki(
             page_name="testpage", 
-            wiki_post="test wiki post", 
+            content="test wiki post", 
             user_id=user.id,
             version=1
             )

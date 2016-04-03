@@ -43,7 +43,7 @@ class Wiki(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     version = db.Column(db.Integer, default=1, autoincrement=True)
     page_name = db.Column(db.String)
-    wiki_post = db.Column(db.String)
+    content = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     date_created = db.Column(db.DateTime, default=datetime.datetime.now)
     date_modified = db.Column(db.DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)

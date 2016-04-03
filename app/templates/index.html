@@ -10,7 +10,7 @@
                 <p><strong>created:&nbsp; </strong>{{ post.format_date }}</p>
                 <!-- {#<p><strong>by:&nbsp;</strong>{{ post.user.name }}</p>#} -->
                 <p><strong>last edit:&nbsp;</strong>{{ post.last_modified_date }}&nbsp; {{ post.last_modified_time }}</p>
-                <pre>{{ post.wiki_post | safe }}</pre>
+                <pre>{{ post.content | safe }}</pre>
             </div>
         </div>
             {% endfor %}

@@ -22,7 +22,7 @@ class TestFront(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"testpage", response.data)
         self.assertIn(b"test wiki post", response.data)
-        response1 = self.client.post("/_edit/testpage/", data=dict(wiki_post="this is an edit"), follow_redirects=True)
+        response1 = self.client.post("/_edit/testpage/", data=dict(content="this is an edit"), follow_redirects=True)
         self.assertEqual(response1.status_code, 200)
         self.assertIn(b"You just edited wiki page <u>testpage</u>", response1.data)
         self.assertIn(b"this is an edit", response1.data)
@@ -40,7 +40,7 @@ class TestFront(BaseTestCase):
         response1 = self.client.get("/_new/newpage", content_type="html/text")
         self.assertEqual(response1.status_code, 200)
         self.assertIn(b"create a new wiki page named <i>newpage</i>", response1.data)
-        response2 = self.client.post("/_new/newpage", data=dict(wiki_post="new post", page_name="newpage", version=1, user_id=1), follow_redirects=True)
+        response2 = self.client.post("/_new/newpage", data=dict(content="new post", page_name="newpage", version=1, user_id=1), follow_redirects=True)
         self.assertEqual(response2.status_code, 200)
         self.assertIn(b"You just created a new wiki named <u>newpage</u>", response2.data)
 

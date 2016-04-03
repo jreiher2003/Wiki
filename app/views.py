@@ -36,7 +36,7 @@ def create_wiki_page(new_page):
     if form.validate_on_submit():
         new_wiki = Wiki(
             page_name=new_page, 
-            wiki_post=form.wiki_post.data,
+            content=form.content.data,
             version=1,
             user_id=current_user.id
             )
@@ -44,7 +44,7 @@ def create_wiki_page(new_page):
         db.session.commit()
         wiki_rev = WikiRevisions(
             wiki_parent=new_wiki.id, 
-            wiki_post_rev=form.wiki_post.data, 
+            wiki_post_rev=form.content.data, 
             user_id=new_wiki.user_id,
             version=new_wiki.version,
             )
@@ -66,11 +66,11 @@ def edit_wiki(page_name):
     wiki_page = Wiki.query.filter_by(page_name=page_name).one()
     form = WikiForm(obj=wiki_page)
     if form.validate_on_submit():
-        wiki_page.wiki_post = form.wiki_post.data
+        wiki_page.content = form.content.data
         wiki_page.version += 1
         revisions = WikiRevisions(
             wiki_parent=wiki_page.id,
-             wiki_post_rev=form.wiki_post.data, 
+             wiki_post_rev=form.content.data, 
              user_id=current_user.id,
              version=wiki_page.version
              )

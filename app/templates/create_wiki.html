@@ -7,10 +7,10 @@
             <form method="post" action="">
                 {{ form.csrf_token }}
                 <div class="form-group">
-                    <label for="create-wiki" class="sr-only">Create Wiki</label>
-                    {{ form.wiki_post(class="",style="min-width: 100%", id="create-wiki", rows="20", placeholder="Add your wiki content use HTML for format...") }}
-                    {% if form.wiki_post.errors %}
-                        {% for error in form.wiki_post.errors %}
+                    <label for="content" class="sr-only">Content</label>
+                    {{ form.content(class="",style="min-width: 100%", id="content", rows="20", placeholder="Add your wiki content use HTML for format...") }}
+                    {% if form.content.errors %}
+                        {% for error in form.content.errors %}
                             <div class="form-error">{{ error }}</div>
                         {% endfor %}
                     {% endif %}
