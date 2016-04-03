@@ -16,3 +16,6 @@ class TestConfig(BaseConfig):
     PRESERVE_CONTEXT_ON_EXCEPTION = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     
+class ProductionConfig(BaseConfig):
+    DEBUG = False 
+    
