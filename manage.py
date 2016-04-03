@@ -7,11 +7,11 @@ from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand 
 import logging
 
-app.config.from_object(os.environ['APP_SETTINGS'])
+app.config.from_object(os.environ["APP_SETTINGS"])
 migrate = Migrate(app, db)
 manager = Manager(app)
 
-manager.add_command('db', MigrateCommand) 
+manager.add_command("db", MigrateCommand) 
 
 @manager.command 
 def test():
@@ -21,16 +21,16 @@ def test():
 @manager.command
 def cov():
     """Runs the unit tests with coverage."""
-    cov = coverage.coverage(branch=True, include='app/*')
+    cov = coverage.coverage(branch=True, include="app/*", omit="app/__init__.py")
     cov.start()
-    tests = unittest.TestLoader().discover('tests')
+    tests = unittest.TestLoader().discover("tests")
     unittest.TextTestRunner(verbosity=2).run(tests)
     cov.stop()
     cov.save()
-    print 'Coverage Summary:'
+    print "Coverage Summary:"
     cov.report()
     basedir = os.path.abspath(os.path.dirname(__file__))
-    covdir = os.path.join(basedir, 'coverage')
+    covdir = os.path.join(basedir, "coverage")
     cov.html_report(directory=covdir)
     cov.erase()
 
