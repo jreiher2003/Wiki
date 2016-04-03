@@ -1,7 +1,7 @@
-import datetime
-from app import db
-from app import bcrypt 
-from slugify import slugify
+import datetime # pragma: no cover
+from app import db # pragma: no cover
+from app import bcrypt # pragma: no cover
+from slugify import slugify # pragma: no cover
 
 class User(db.Model):
 
@@ -34,7 +34,7 @@ class User(db.Model):
         return unicode(self.id)
 
     def __repr__(self):
-        return '<name> {}'.format(self.name)
+        return "<name> {}".format(self.name)
 
 class Wiki(db.Model):
 
@@ -56,22 +56,22 @@ class Wiki(db.Model):
 
     @property 
     def format_date(self):
-        return '{dt:%A} {dt:%B} {dt.day}, {dt.year}'.format(dt=self.date_created)
+        return "{dt:%A} {dt:%B} {dt.day}, {dt.year}".format(dt=self.date_created)
 
     @property 
     def format_time(self):
-        return '{dt:%I:%M %p}'.format(dt=self.date_created)
+        return "{dt:%I:%M %p}".format(dt=self.date_created)
 
     @property 
     def last_modified_date(self):
-        return '{dt:%Y-%m-%d}'.format(dt=self.date_modified)
+        return "{dt:%Y-%m-%d}".format(dt=self.date_modified)
 
     @property 
     def last_modified_time(self):
-        return '{dt:%I:%M %p}'.format(dt=self.date_modified)
+        return "{dt:%I:%M %p}".format(dt=self.date_modified)
 
     def __repr__(self):
-        return '<id> {}'.format(self.id)
+        return "<id> {}".format(self.id)
 
 
 class WikiRevisions(db.Model):
@@ -87,15 +87,13 @@ class WikiRevisions(db.Model):
     user = db.relationship(User)
     date_created = db.Column(db.DateTime, default=datetime.datetime.now)
    
-
     @property 
     def format_date(self):
-        return '{dt:%A} {dt:%B} {dt.day}, {dt.year}'.format(dt=self.date_created)
+        return "{dt:%A} {dt:%B} {dt.day}, {dt.year}".format(dt=self.date_created)
 
     @property 
     def format_time(self):
-        return '{dt:%I:%M %p}'.format(dt=self.date_created)
-
+        return "{dt:%I:%M %p}".format(dt=self.date_created)
 
     def __repr__(self):
-        return '<id> {}'.format(self.id)
+        return "<id> {}".format(self.id)
