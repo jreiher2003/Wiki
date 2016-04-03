@@ -12,12 +12,12 @@ class TestLogin(BaseTestCase):
         self.assertIn(b"Login", response.data)
 
     def test_correct_login(self):
-        response = self.client.post("/login", data=dict(username="Admin", password="password"), follow_redirects=True)
+        response = self.client.post("/login", data=dict(username="Admin", password="password", ip="127.0.0.1"), follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b"you were signed in", response.data)
+        self.assertIn(b"You have signed in as <strong>Admin</strong>!", response.data)
 
     def test_incorrect_login(self):
-        response = self.client.post("/login", data=dict(username="wrong", password="wrong"), follow_redirects=True)
+        response = self.client.post("/login", data=dict(username="wrong", password="wrong", ip="127.0.0.1"), follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"<strong>Invalid password.</strong> Please try again.", response.data)
 
@@ -29,9 +29,9 @@ class TestLogin(BaseTestCase):
 
 
     def test_logout(self):
-        response = self.client.post("/login", data=dict(username="Admin", password="password"), follow_redirects=True)
-        response = self.client.get("/logout", follow_redirects=True)
-        self.assertIn(b"You have logged out", response.data)
+        response = self.client.post("/login", data=dict(username="Admin", password="password", ip="127.0.0.1"), follow_redirects=True)
+        response1 = self.client.get("/logout", headers={"Referer": "/login"}, follow_redirects=True)
+        self.assertIn(b"You have logged out.", response1.data)
 
     def test_logout_pre(self):
         response = self.client.get("/logout", follow_redirects=True)
