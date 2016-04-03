@@ -1,15 +1,8 @@
-import re
-from app import app
-from werkzeug.routing import BaseConverter
+from app import app # pragma: no cover
+from flask import request 
 
-
-# class RegexConverter(BaseConverter):
-#     def __init__(self, url_map, *items):
-#         super(RegexConverter, self).__init__(url_map)
-#         self.regex = items[0]
-
-# # Use the RegexConverter function as a converter
-# # method for mapped urls
-# app.url_map.converters['regex'] = RegexConverter
-
+def get_ip():
+    headers_list = request.headers.getlist("X-Forwarded-For")
+    user_ip = headers_list[0] if headers_list else request.remote_addr
+    return user_ip
 
