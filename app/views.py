@@ -1,18 +1,9 @@
-from app import app, db, bcrypt
-from flask import render_template, url_for, request, flash, redirect, session
-from flask.ext.login import login_user, logout_user, login_required, current_user
-from models import User, Wiki, WikiRevisions
-from forms import SignUpForm, LoginForm, WikiForm
-
-def redirect_url(default='index'):
-    return request.args.get('next') or \
-           request.referrer or \
-           url_for(default)
-
-def get_ip():
-    headers_list = request.headers.getlist("X-Forwarded-For")
-    user_ip = headers_list[0] if headers_list else request.remote_addr
-    return user_ip
+from app import app, db, bcrypt # pragma: no cover
+from flask import render_template, url_for, request, flash, redirect, session # pragma: no cover
+from flask.ext.login import login_user, logout_user, login_required, current_user # pragma: no cover
+from models import User, Wiki, WikiRevisions # pragma: no cover
+from forms import SignUpForm, LoginForm, WikiForm # pragma: no cover
+from utils import get_ip # pragma: no cover
 
 @app.route("/")
 def index():
@@ -34,7 +25,7 @@ def show_wiki(page_name):
             )
     except AttributeError:
         return redirect(url_for(
-            'create_wiki_page', 
+            "create_wiki_page", 
             new_page=page_name))
 
 @app.route("/_new/<path:new_page>", methods=["GET", "POST"])
@@ -83,7 +74,6 @@ def edit_wiki(page_name):
              user_id=current_user.id,
              version=wiki_page.version
              )
-        # revisions.version += 1
         db.session.add(revisions)
         db.session.add(wiki_page)
         db.session.commit()
@@ -117,8 +107,6 @@ def login():
             user.password, form.password.data): 
             login_user(user)
             flash("You have signed in as <strong>%s</strong>!" % user.name, "success")
-            # referer = request.headers["referer"]
-            # print referer
             return redirect(url_for("index"))
         else:
             flash("<strong>Invalid password.</strong> Please try again.", "danger")
@@ -137,7 +125,6 @@ def logout():
     session.pop("session", None)
     flash("You have logged out.", "danger")
     referer = request.headers["referer"]
-    print referer
     return redirect(referer)
 
 @app.route("/signup", methods=["GET", "POST"])
