@@ -117,8 +117,8 @@ def login():
             user.password, form.password.data): 
             login_user(user)
             flash("You have signed in as <strong>%s</strong>!" % user.name, "success")
-            referer = request.headers["referer"]
-            print referer
+            # referer = request.headers["referer"]
+            # print referer
             return redirect(url_for("index"))
         else:
             flash("<strong>Invalid password.</strong> Please try again.", "danger")
