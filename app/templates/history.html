@@ -7,6 +7,7 @@
                 <div class="history-show-wiki">
                     <hr>
                     <p class="pull-right" style="padding-top:-25px;"><a href="{{ url_for('show_wiki', page_name=rev.wiki.page_name) }}"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>&nbsp;back</a></p>
+                    <p class="pull-right" style="padding-top:-25px;"><a href="{{ url_for('show_history_version', page_name=rev.wiki.page_name, version=rev.version) }}"><span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span>&nbsp;view</a>&nbsp;&nbsp;</p>
                     <p><strong>version:</strong> {{ rev.version }} </p>
                     <p><strong>last edit:</strong>&nbsp; {{ rev.format_date }} at {{ rev.format_time }}</p>
                     <p><strong>edited by:</strong> {{ rev.user.name }}</p>
