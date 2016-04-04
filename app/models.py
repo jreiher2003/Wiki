@@ -89,7 +89,7 @@ class WikiRevisions(db.Model):
    
     @property 
     def format_date(self):
-        return "{dt:%A} {dt:%B} {dt.day}, {dt.year}".format(dt=self.date_created)
+        return "{dt:%Y-%m-%d}".format(dt=self.date_created)
 
     @property 
     def format_time(self):
