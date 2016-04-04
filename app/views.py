@@ -3,7 +3,7 @@ from flask import render_template, url_for, request, flash, redirect, session # 
 from flask.ext.login import login_user, logout_user, login_required, current_user # pragma: no cover
 from models import User, Wiki, WikiRevisions # pragma: no cover
 from forms import SignUpForm, LoginForm, WikiForm # pragma: no cover
-from utils import get_ip # pragma: no cover
+from utils import get_ip, is_safe_url # pragma: no cover
 
 @app.route("/")
 def index():
@@ -107,7 +107,10 @@ def login():
             user.password, form.password.data): 
             login_user(user)
             flash("You have signed in as <strong>%s</strong>!" % user.name, "success")
-            return redirect(url_for("index"))
+            next = request.args.get("next")
+            if not is_safe_url(next):
+                return flask.abort(400)
+            return redirect(next or url_for("index"))
         else:
             flash("<strong>Invalid password.</strong> Please try again.", "danger")
             return redirect(url_for("login"))
@@ -124,7 +127,7 @@ def logout():
     session.pop("logged_in", None)
     session.pop("session", None)
     flash("You have logged out.", "danger")
-    referer = request.headers["referer"]
+    referer = request.headers["Referer"]
     return redirect(referer)
 
 @app.route("/signup", methods=["GET", "POST"])
