@@ -7,7 +7,7 @@
                 <hr>
                 <p class="pull-right" style="padding-top:-25px;"><a href="{{ url_for('show_history', page_name=h_version.wiki.page_name) }}"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>&nbsp;back</a></p>
                 <p><strong>version: </strong>{{ h_version.version }}</p>
-                <p><strong>last edit: </strong>{{ h_version.format_date }}</p>
+                <p><strong>last edit: </strong>{{ h_version.format_date }} at {{ h_version.format_time }}</p>
                 <p><strong>edit by: </strong>{{ h_version.user.name }}</p>
                 <hr>
                 {{ h_version.wiki_post_rev | safe }}
