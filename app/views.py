@@ -51,7 +51,7 @@ def create_wiki_page(new_page):
         db.session.add(wiki_rev)
         db.session.commit()
         flash("You just created a new wiki named <u>%s</u>" % new_wiki.page_name, "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("show_wiki", page_name=new_page))
     return render_template(
         "create_wiki.html", 
         new_page=new_page, 
@@ -96,6 +96,12 @@ def show_history(page_name):
         "history.html", 
         revisions=revisions
         )
+
+@app.route("/<page_name>/_history/<path:version>")
+def show_history_version(page_name, version):
+    wiki_page = Wiki.query.filter_by(page_name=page_name).one()
+    h_version = WikiRevisions.query.filter_by(wiki_parent=wiki_page.id, version=version).first()
+    return render_template("history_version.html", h_version=h_version)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -145,7 +151,10 @@ def signup():
             db.session.commit()
             login_user(user)
             flash("You just added user <strong>%s</strong>" % user.name, "success")
-            return redirect(url_for("index"))
+            next = request.args.get("next")
+            if not is_safe_url(next):
+                return flask.abort(400)
+            return redirect(next or url_for("index"))
         except:
             flash("That username already exists", "danger")
             return redirect(url_for("signup"))
