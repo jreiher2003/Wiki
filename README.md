@@ -12,3 +12,5 @@ Techonolgy Stack
 * Bootstrap 
 * Heroku 
 
+___
+To create a new wiki page just start typing in the url like  https://pro-wiki.herokuapp.com/testpage10 
