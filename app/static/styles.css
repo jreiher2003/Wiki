@@ -45,12 +45,13 @@ hr {
     display: block;
     margin: 30px auto 30px;
     color: white;
-    background-color: #337ab7;
-    border: none;
+    border: 1px solid rgba(51,122,183,.8);
+    background-color: rgba(51,122,183,.7); 
 }
-.inputButton:active {
+.inputButton:hover {
     top: 5px;
     box-shadow: none;
+    background-color: rgba(51,122,183,.9)
 }
 .form-error {
     padding: 2px;
@@ -84,7 +85,7 @@ pre {
 }
 .history-show-wiki {
     border-right: 1px solid rgba(51,122,183,.3);
-    border-bottom: 1px solid rgba(51,122,183,.3); ;
+    border-bottom: 1px solid rgba(51,122,183,.3); 
     padding-right:15px;
     word-wrap: break-word;
 }
@@ -92,5 +93,5 @@ footer {
     margin-top: 15px;
     height: 200px;
     border: 1px solid rgba(51,122,183,.4);
-    background-color: rgba(51,122,183,.5); ;
+    background-color: rgba(51,122,183,.5); 
 }
