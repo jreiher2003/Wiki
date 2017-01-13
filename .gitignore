@@ -2,3 +2,5 @@
 *.pyc
 *.db
 coverage/
+venv/
+env.sh
